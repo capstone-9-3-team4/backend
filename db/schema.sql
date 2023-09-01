@@ -18,19 +18,27 @@ CREATE TABLE patients (
  first_name VARCHAR(200) NOT NULL,
  last_name VARCHAR(200) NOT NULL,
  email VARCHAR(200) NOT NULL,
- dob VARCHAR(200),
- gender VARCHAR(200),
- contact_number VARCHAR(200),
- address VARCHAR(200),
- city VARCHAR(200),
- state VARCHAR(200),
- zip_code VARCHAR(200)   
+ dob DATE NOT NULL,
+ gender VARCHAR(200) NOT NULL,
+ contact_number VARCHAR(200) NOT NULL,
+ address VARCHAR(200) NOT NULL,
+ city VARCHAR(200) NOT NULL,
+ state VARCHAR(200) NOT NULL,
+ zip_code VARCHAR(200) NOT NULL   
 );
 
 CREATE TABLE journal_entries (
  id SERIAL PRIMARY KEY,
  patient_id INTEGER NOT NULL REFERENCES patients(id),
- entry_date DATE,
+ entry_date DATE NOT NULL,
  journal_entry VARCHAR(300) NOT NULL,
- analysis_score INTEGER
+ analysis_score INTEGER NOT NULL
+);
+
+CREATE TABLE journal_entries (
+ id SERIAL PRIMARY KEY,
+ patient_id INTEGER NOT NULL REFERENCES patients(id),
+ entry_date DATE NOT NULL,
+ journal_entry VARCHAR(300) NOT NULL,
+ analysis_score INTEGER NOT NULL
 );
