@@ -1,11 +1,12 @@
 const Joi = require("joi");
 const createValidator = require("./createValidator");
 
-const journalEntrySchema = Joi.object({
-    patient_id: Joi.number().integer(),
-    entry_date: Joi.date(),
-    journal_entry: Joi.string(),
-    analysis_score: Joi.number().integer()
+const journalSchema = Joi.object({
+    id: Joi.number().integer().allow(null),
+    patient_id: Joi.number().integer().required(),
+    entry_date: Joi.string().min(10).required(),
+    journal_entry: Joi.string().required(),
+    analysis_score: Joi.number().integer().required()
 });
 
-module.exports = createValidator(journalEntrySchema);
+module.exports = createValidator(journalSchema);

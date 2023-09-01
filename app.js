@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const journalsControllers = require("./controllers/journalsControllers");
+const patientsControllers = require("./controllers/patientsControllers");
+const therapistsControllers = require("./controllers/therapistsControllers");
 
 // config
 const app = express();
@@ -15,6 +17,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/journals", journalsControllers);
+
+app.use("/patients", patientsControllers);
+
+app.use("/therapists", therapistsControllers);
 
 app.get("*", (req, res) => {
     res.status(404).send("Page Not Found");
