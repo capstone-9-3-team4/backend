@@ -52,7 +52,7 @@ INSERT INTO patients (therapist_id, first_name, last_name, email, dob, gender, c
 (4, 'David', 'Williams', 'davidwilliams@gmail.org', '1988-06-30', 'male', '123-456-7890', '210 Washington Street', 'Seattle', 'WA', '98101'),
 (5, 'Emily', 'Brown', 'emilybrown@gmail.org', '1997-07-17', 'female', '234-567-8901', '345 Jefferson Street', 'San Francisco', 'CA', '94101'),
 (11, 'Michael', 'Green', 'michaelgreen@gmail.org', '1990-08-24', 'male', '345-678-9012', '456 Lincoln Street', 'Boston', 'MA', '02101'),
-(6, 'Jessica', 'White', 'jessicawhite@gmail.org', '1995-09-31', 'female', '456-789-0123', '567 Washington Street', 'New York', 'NY', '10001'),
+(6, 'Jessica', 'White', 'jessicawhite@gmail.org', '1995-09-30', 'female', '456-789-0123', '567 Washington Street', 'New York', 'NY', '10001'),
 (7, 'Christopher', 'Black', 'christopherblack@gmail.org', '1998-10-18', 'male', '567-890-1234', '678 Jefferson Street', 'Los Angeles', 'CA', '90002'),
 (8, 'John', 'Doe', 'johndoe@gmail.org', '1980-02-20', 'male', '666-666-6666', '123 Main Street', 'Los Angeles', 'CA', '90001'),
 (9, 'Jane', 'Doe', 'janedoe@gmail.org', '1990-03-08', 'female', '777-777-7777', '543 Elm Street', 'Chicago', 'IL', '60601'),
