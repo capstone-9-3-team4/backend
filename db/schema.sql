@@ -3,8 +3,16 @@ CREATE DATABASE therapistconnect;
 
 \c therapistconnect;
 
+CREATE TABLE users (
+ id VARCHAR(200) PRIMARY KEY,
+ role VARCHAR(200) NOT NULL,
+ email VARCHAR(200) NOT NULL,
+ password_hash VARCHAR(200) NOT NULL
+);
+
 CREATE TABLE therapists (
  id SERIAL PRIMARY KEY,
+ user_id VARCHAR(200) NOT NULL REFERENCES users(id),
  license_number INTEGER NOT NULL,
  first_name VARCHAR(200) NOT NULL,
  last_name VARCHAR(200) NOT NULL,
@@ -14,6 +22,7 @@ CREATE TABLE therapists (
 
 CREATE TABLE patients (
  id SERIAL PRIMARY KEY,
+ user_id VARCHAR(200) NOT NULL REFERENCES users(id),
  therapist_id INTEGER NOT NULL REFERENCES therapists(id),
  first_name VARCHAR(200) NOT NULL,
  last_name VARCHAR(200) NOT NULL,
@@ -34,4 +43,3 @@ CREATE TABLE journal_entries (
  journal_entry VARCHAR(300) NOT NULL,
  analysis_score INTEGER NOT NULL
 );
-
