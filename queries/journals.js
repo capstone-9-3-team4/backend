@@ -1,7 +1,7 @@
 const db = require("../db/dbConfig");
 
 // query to get all journal entries
-const getAllJournals = async () => {
+const getAllJournalsByTherapist = async () => {
     try {
         const allJournals = await db.any("SELECT * FROM journal_entries");
         return { allJournals };
@@ -63,7 +63,7 @@ const deleteJournal = async (id) => {
 };
 
 module.exports = {
-    getAllJournals,
+    getAllJournalsByTherapist,
     getJournal,
     createJournal,
     updateJournal,

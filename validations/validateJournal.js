@@ -6,7 +6,8 @@ const journalSchema = Joi.object({
     patient_id: Joi.number().integer().required(),
     entry_date: Joi.string().min(10).required(),
     journal_entry: Joi.string().required(),
-    analysis_score: Joi.number().integer().required()
+    analysis_score: Joi.number().integer().required(),
+    read: Joi.boolean().required()
 });
 
 module.exports = createValidator(journalSchema);
