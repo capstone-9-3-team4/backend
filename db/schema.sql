@@ -6,8 +6,7 @@ CREATE DATABASE therapistconnect;
 CREATE TABLE users (
  id VARCHAR(200) PRIMARY KEY,
  role VARCHAR(200) NOT NULL,
- email VARCHAR(200) NOT NULL,
- password_hash VARCHAR(200) NOT NULL
+ email VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE therapists (
@@ -40,6 +39,7 @@ CREATE TABLE journal_entries (
  id SERIAL PRIMARY KEY,
  patient_id INTEGER NOT NULL REFERENCES patients(id),
  entry_date DATE NOT NULL,
- journal_entry VARCHAR(300) NOT NULL,
- analysis_score INTEGER NOT NULL
+ journal_entry VARCHAR(3000) NOT NULL,
+ analysis_score INTEGER NOT NULL,
+ read BOOLEAN DEFAULT FALSE
 );

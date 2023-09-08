@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const journalsControllers = require("./controllers/journalsControllers");
 const patientsControllers = require("./controllers/patientsControllers");
-const therapistsControllers = require("./controllers/therapistsControllers");
+const therapistControllers = require("./controllers/therapistControllers");
 const usersControllers = require("./controllers/usersControllers");
 
 // config
@@ -21,7 +21,7 @@ app.use("/journals", journalsControllers);
 
 app.use("/patients", patientsControllers);
 
-app.use("/therapists", therapistsControllers);
+app.use("/therapist", therapistControllers);
 
 app.use("/users", usersControllers);
 
