@@ -1,5 +1,6 @@
 const express = require("express");
-const patients = express.Router();
+const patients = express.Router({ mergeParams: true});
+const journalsController = require("./journalsControllers");
 const validatePatient = require("../validations/validatePatient");
 const {
     getAllPatients,
@@ -8,6 +9,10 @@ const {
     updatePatient,
     deletePatient
 } = require("../queries/patients");
+
+
+// "therapist/:tid/patients/:pid/journals"
+patients.use("/:pid/journals",journalsController)
 
 // get method route to index all patients
 patients.get("/", async (req, res) => {
@@ -24,10 +29,10 @@ patients.get("/", async (req, res) => {
 });
 
 // get method route to show one patient
-patients.get("/:id", async (req, res) => {
+patients.get("/:pid", async (req, res) => {
     try {
-        const { id } = req.params;
-        const { error, patient } = await getPatient(id);
+        const { pid } = req.params;
+        const { error, patient } = await getPatient(pid);
         if (error && error.received === 0) {
             res.status(404).json({ error: "Patient Not Found, Check Patient ID And Try Again" });
         } else if (error) {

@@ -1,14 +1,35 @@
 const db = require("../db/dbConfig");
 
 // query to get all journal entries
-const getAllJournalsByTherapist = async () => {
+// const getAllJournalsByTherapist = async () => {
+//     try {
+//         const allJournals = await db.any("SELECT * FROM journal_entries");
+//         return { allJournals };
+//     } catch (error) {
+//         return { error: error };
+//     }
+// };
+
+const getUJournalsOfPatientByTherapist = async (tid,pid) => {
+
     try {
-        const allJournals = await db.any("SELECT * FROM journal_entries");
-        return { allJournals };
+        const UJournallOfPatientByTherapist = await db.any(
+            `select p.id p_id, j.*  from therapists t join patients p on (t.id = p.therapist_id) 
+            join journal_entries j on (p.id=j.patient_id) 
+            where t.id=$1 and p.id=$2 and j.read = false 
+            order by j.analysis_score,j.entry_date`, [tid,pid]
+        )
+
+        
+   
+        return {UJournallOfPatientByTherapist};
     } catch (error) {
+       
         return { error: error };
     }
 };
+
+
 
 // query to get one journal entry
 const getJournal = async (id) => {
@@ -63,7 +84,8 @@ const deleteJournal = async (id) => {
 };
 
 module.exports = {
-    getAllJournalsByTherapist,
+    // getAllJournalsByTherapist,
+    getUJournalsOfPatientByTherapist,
     getJournal,
     createJournal,
     updateJournal,

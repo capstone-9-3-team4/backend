@@ -1,8 +1,9 @@
 const express = require("express");
-const journals = express.Router();
+const journals = express.Router({ mergeParams: true});
 const validateJournal = require("../validations/validateJournal");
 const {
-    getAllJournals,
+    // getAllJournals,
+    getUJournalsOfPatientByTherapist,
     getJournal,
     createJournal,
     updateJournal,
@@ -22,6 +23,28 @@ journals.get("/", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// "therapist/:tid/patients/:pid/journals/unread"
+journals.get("/unread", async (req, res) => {
+    
+    const { tid, pid } = req.params;
+
+   
+    try {
+        const { error, UJournallOfPatientByTherapist} = await getUJournalsOfPatientByTherapist(tid,pid);
+        if (error) {
+            throw new Error("Server Error");
+        } else {
+          
+            res.status(200).json(UJournallOfPatientByTherapist);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
 
 // get method route to show one journal 
 journals.get("/:id", async (req, res) => {
