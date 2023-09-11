@@ -1,6 +1,6 @@
 const express = require("express");
 const therapist = express.Router();
-const patientprofileController = require("./patientprofileController");
+const patientsController = require("./patientsControllers");
 const validateTherapist = require("../validations/validateTherapist");
 const {
     getTherapistAndHighRiskPatients,
@@ -16,17 +16,17 @@ const {
     getAllJournals
 } = require("../queries/journals");
 
-
-therapist.use("/:tid/patient",patientprofileController)
+// "therapist/:tid/patients/"
+therapist.use("/:tid/patients",patientsController)
 
 
 
 // get all the patients by therapist that are at high risk (red)
-therapist.get("/:id/dashboard/highrisk", async (req, res) => {
+therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { tid } = req.params;
     
-        const { error, allHighRiskPatientsByTherapist } = await getTherapistAndHighRiskPatients(id);
+        const { error, allHighRiskPatientsByTherapist } = await getTherapistAndHighRiskPatients(tid);
         
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
@@ -42,11 +42,11 @@ therapist.get("/:id/dashboard/highrisk", async (req, res) => {
 
 // get all patients by therapist that are at middle risk (yellow)
 // /therapist/${tid}/dashboard/yellowrisk
-therapist.get("/:id/dashboard/yellowrisk", async (req, res) => {
+therapist.get("/:tid/dashboard/yellowrisk", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { tid } = req.params;
        
-        const { error, allYellowRiskPatientsByTherapist } = await getTherapistAndYellowRiskPatients(id);
+        const { error, allYellowRiskPatientsByTherapist } = await getTherapistAndYellowRiskPatients(tid);
     
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
@@ -63,11 +63,11 @@ therapist.get("/:id/dashboard/yellowrisk", async (req, res) => {
 
 // get all patients by therapist that are at not risk (green)
 // /therapist/${tid}/dashboard/greenrisk
-therapist.get("/:id/dashboard/greenrisk", async (req, res) => {
+therapist.get("/:tid/dashboard/greenrisk", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { tid } = req.params;
        
-        const { error, allGreenRiskPatientsByTherapist } = await getTherapistAndGreenRiskPatients(id);
+        const { error, allGreenRiskPatientsByTherapist } = await getTherapistAndGreenRiskPatients(tid);
     
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
