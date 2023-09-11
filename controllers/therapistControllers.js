@@ -1,5 +1,6 @@
 const express = require("express");
 const therapist = express.Router();
+const patientprofileController = require("./patientprofileController");
 const validateTherapist = require("../validations/validateTherapist");
 const {
     getTherapistAndHighRiskPatients,
@@ -14,6 +15,9 @@ const {
 const {
     getAllJournals
 } = require("../queries/journals");
+
+
+therapist.use("/:tid/patient",patientprofileController)
 
 
 
