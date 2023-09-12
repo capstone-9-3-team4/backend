@@ -1,11 +1,11 @@
 const express = require("express");
 const therapist = express.Router();
-const patientsController = require("./patientsControllers");
+const patientsControllers = require("./patientsControllers");
 const validateTherapist = require("../validations/validateTherapist");
 const {
     getTherapistAndHighRiskPatients,
-    getTherapistAndYellowRiskPatients,
-    getTherapistAndGreenRiskPatients
+    getTherapistAndMediumRiskPatients,
+    getTherapistAndLowRiskPatients
     // getAllTherapists,
     // getTherapist,
     // createTherapist,
@@ -16,18 +16,13 @@ const {
     getAllJournals
 } = require("../queries/journals");
 
-// "therapist/:tid/patients/"
-therapist.use("/:tid/patients",patientsController)
 
-
-
-// get all the patients by therapist that are at high risk (red)
+// get method route to show all patients with high risk journals for one therapist
 therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     try {
         const { tid } = req.params;
-    
         const { error, allHighRiskPatientsByTherapist } = await getTherapistAndHighRiskPatients(tid);
-        
+
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
@@ -40,20 +35,18 @@ therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     }
 });
 
-// get all patients by therapist that are at middle risk (yellow)
-// /therapist/${tid}/dashboard/yellowrisk
-therapist.get("/:tid/dashboard/yellowrisk", async (req, res) => {
+// get all patients by therapist that are at medium risk
+therapist.get("/:tid/dashboard/mediumrisk", async (req, res) => {
     try {
         const { tid } = req.params;
-       
-        const { error, allYellowRiskPatientsByTherapist } = await getTherapistAndYellowRiskPatients(tid);
-    
+        const { error, allMediumRiskPatientsByTherapist } = await getTherapistAndMediumRiskPatients(tid);
+
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
             throw new Error("Server Error")
         } else {
-            res.status(200).json(allYellowRiskPatientsByTherapist);
+            res.status(200).json(allMediumRiskPatientsByTherapist);
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -61,39 +54,38 @@ therapist.get("/:tid/dashboard/yellowrisk", async (req, res) => {
 });
 
 
-// get all patients by therapist that are at not risk (green)
-// /therapist/${tid}/dashboard/greenrisk
-therapist.get("/:tid/dashboard/greenrisk", async (req, res) => {
+// get all patients by therapist that are at low/no risk
+therapist.get("/:tid/dashboard/lowrisk", async (req, res) => {
     try {
         const { tid } = req.params;
-       
-        const { error, allGreenRiskPatientsByTherapist } = await getTherapistAndGreenRiskPatients(tid);
-    
+        const { error, allLowRiskPatientsByTherapist } = await getTherapistAndLowRiskPatients(tid);
+
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
             throw new Error("Server Error")
         } else {
-            res.status(200).json(allGreenRiskPatientsByTherapist);
+            res.status(200).json(allLowRiskPatientsByTherapist);
         }
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
 
+// loading patientsControllers middleware
+therapist.use("/:tid/patients", patientsControllers)
 
 
-
-
-// get method route to show all journals for one patient for one therapist
-therapist.get("/:idt/dashboard/patient/:idp", async (req, res) => {
-    try {
-        const { idt, idp } = req.params;
-    } catch (error) {
-        res.status(500).json({ error: error });
-    }
-})
+// // get method route to show all journals for one patient for one therapist
+// therapist.get("/:idt/dashboard/patient/:idp", async (req, res) => {
+//     try {
+//         const { idt, idp } = req.params;
+//     } catch (error) {
+//         res.status(500).json({ error: error });
+//     }
+// })
 
 
 // // get method route to index all therapists (for admins)
