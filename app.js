@@ -26,7 +26,6 @@ app.use("/therapist", therapistControllers);
 app.use("/users", usersControllers);
 
 app.get("*", (req, res) => {
-    console.log('app.js 404')
     res.status(404).send("Page Not Found");
 })
 
