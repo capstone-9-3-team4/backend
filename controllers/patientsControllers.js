@@ -10,6 +10,22 @@ const {
     deletePatient
 } = require("../queries/patients");
 
+// get method route to show one patient
+patients.get("/:pid", async (req, res) => {
+    try {
+        const { pid } = req.params;
+        const { error, patient } = await getPatient(pid);
+        if (error && error.received === 0) {
+            res.status(404).json({ error: "Patient Not Found, Check Patient ID And Try Again" });
+        } else if (error) {
+            throw new Error("Server Error");
+        } else {
+            res.status(200).json(patient);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // loading journalsControllers middleware
 patients.use("/:pid/journals", journalsControllers)
@@ -22,23 +38,6 @@ patients.use("/:pid/journals", journalsControllers)
 //             throw new Error("ServerError");
 //         } else {
 //             res.status(200).json(allPatients);
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-
-// // get method route to show one patient
-// patients.get("/:pid", async (req, res) => {
-//     try {
-//         const { pid } = req.params;
-//         const { error, patient } = await getPatient(pid);
-//         if (error && error.received === 0) {
-//             res.status(404).json({ error: "Patient Not Found, Check Patient ID And Try Again" });
-//         } else if (error) {
-//             throw new Error("Server Error");
-//         } else {
-//             res.status(200).json(patient);
 //         }
 //     } catch (error) {
 //         res.status(500).json({ error: error.message });
