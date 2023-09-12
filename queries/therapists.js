@@ -1,8 +1,7 @@
 const db = require("../db/dbConfig");
 
-// query to get one therapist and all journal entries and all journal entries for therapist
+// query to get one therapist and all patients with high risk journal entries for therapist
 const getTherapistAndHighRiskPatients = async (id) => {
-  
     try {
         const allHighRiskPatientsByTherapist = await db.any(
             `SELECT t.id t_id,t.first_name t_first_name, t.last_name t_last_name, t.email, t.license_number, p.first_name p_first_name, p.last_name p_last_name, p.id p_id
@@ -15,33 +14,31 @@ const getTherapistAndHighRiskPatients = async (id) => {
         return { error: error };
     }
 };
-
-const getTherapistAndYellowRiskPatients = async (id) => {
-  
+// query to get one therapist and all patients with medium risk journal entries for therapist
+const getTherapistAndMediumRiskPatients = async (id) => {
     try {
-        const allYellowRiskPatientsByTherapist = await db.any(
+        const allMediumRiskPatientsByTherapist = await db.any(
             `SELECT t.id t_id,t.first_name t_first_name, t.last_name t_last_name, t.email, t.license_number, p.first_name p_first_name, p.last_name p_last_name, p.id p_id
             FROM therapists t JOIN patients p ON (t.id=p.therapist_id) JOIN journal_entries j 
             ON (p.id=j.patient_id) WHERE t.user_id=$1 AND j.analysis_score = 2 AND j.read=false
             GROUP BY 1,2,3,4,5,6,7,8`, id
         )
-        return { allYellowRiskPatientsByTherapist };
+        return { allMediumRiskPatientsByTherapist };
     } catch (error) {
         return { error: error };
     }
 };
 
-
-const getTherapistAndGreenRiskPatients = async (id) => {
-  
+// query to get one therapist and all patients with low risk journal entries for therapist
+const getTherapistAndLowRiskPatients = async (id) => {
     try {
-        const allGreenRiskPatientsByTherapist = await db.any(
+        const allLowRiskPatientsByTherapist = await db.any(
             `SELECT t.id t_id,t.first_name t_first_name, t.last_name t_last_name, t.email, t.license_number, p.first_name p_first_name, p.last_name p_last_name, p.id p_id
             FROM therapists t JOIN patients p ON (t.id=p.therapist_id) JOIN journal_entries j 
             ON (p.id=j.patient_id) WHERE t.user_id=$1 AND j.analysis_score = 3 AND j.read=false
             GROUP BY 1,2,3,4,5,6,7,8`, id
         )
-        return { allGreenRiskPatientsByTherapist };
+        return { allLowRiskPatientsByTherapist };
     } catch (error) {
         return { error: error };
     }
@@ -105,9 +102,9 @@ const getTherapistAndGreenRiskPatients = async (id) => {
 
 module.exports = {
     getTherapistAndHighRiskPatients,
-    getTherapistAndYellowRiskPatients,
-    getTherapistAndGreenRiskPatients
-    
+    getTherapistAndMediumRiskPatients,
+    getTherapistAndLowRiskPatients
+
     // getAllTherapists,
     // getTherapist,
     // createTherapist,
