@@ -4,10 +4,10 @@ const validateJournal = require("../validations/validateJournal");
 const {
     getUnreadJournalsOfPatientByTherapist,
     getUnreadJournalOfPatientByTherapist,
+    updateJournal
     // getAllJournals,
     // getJournal,
     // createJournal,
-    // updateJournal,
     // deleteJournal
 } = require("../queries/journals");
 
@@ -47,6 +47,19 @@ journals.get("/unread/:jid", async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// put method route to update journal 
+journals.put("/:jid", async (req, res) => {
+    const { jid } = req.params;
+    const { error, updatedJournal } = await updateJournal(jid, req.body);
+    if (error && error.received === 0) {
+        res.status(404).json({ error: "Journal Entry Not Found, Check Journal ID And Try Again" })
+    } else if (error) {
+        throw new Error("Server Error");
+    } else {
+        res.status(200).json(updatedJournal);
     }
 });
 

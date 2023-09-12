@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
     res.send("Welcome TEAM!!!")
 });
 
-app.use("/journals", journalsControllers);
+app.use("/journal", journalsControllers);
 
 app.use("/patients", patientsControllers);
 
