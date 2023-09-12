@@ -4,14 +4,27 @@ const db = require("../db/dbConfig");
 const getUnreadJournalsOfPatientByTherapist = async (tid, pid) => {
     try {
         const unreadJournalsOfPatientByTherapist = await db.any(
-            `select p.id p_id, j.*  from therapists t join patients p on (t.id = p.therapist_id) 
-            join journal_entries j on (p.id=j.patient_id) 
-            where t.id=$1 and p.id=$2 and j.read = false 
-            order by j.analysis_score,j.entry_date`, [tid, pid]
+            `SELECT p.id p_id, j.* FROM therapists t join patients p ON (t.id = p.therapist_id) 
+            JOIN journal_entries j ON (p.id=j.patient_id) 
+            WHERE t.id=$1 and p.id=$2 AND j.read = false 
+            ORDER BY j.analysis_score,j.entry_date`, [tid, pid]
         )
-
         return { unreadJournalsOfPatientByTherapist };
+    } catch (error) {
+        return { error: error };
+    }
+};
 
+// query to get one unread journal from one patient by therapist
+const getUnreadJournalOfPatientByTherapist = async (tid, pid, jid) => {
+    try {
+        const unreadJournalOfPatientByTherapist = await db.one(
+            `SELECT p.id p_id, j.* FROM therapists t JOIN patients p ON (t.id = p.therapist_id) 
+            JOIN journal_entries j ON (p.id=j.patient_id) 
+            WHERE t.id=$1 and p.id=$2 AND j.id=$3 AND j.read = false 
+            ORDER BY j.analysis_score,j.entry_date`, [tid, pid, jid]
+        );
+        return { unreadJournalOfPatientByTherapist };
     } catch (error) {
         return { error: error };
     }
@@ -80,8 +93,9 @@ const getUnreadJournalsOfPatientByTherapist = async (tid, pid) => {
 // };
 
 module.exports = {
-    // getAllJournalsByTherapist,
     getUnreadJournalsOfPatientByTherapist,
+    getUnreadJournalOfPatientByTherapist
+    // getAllJournalsByTherapist,
     // getJournal,
     // createJournal,
     // updateJournal,
