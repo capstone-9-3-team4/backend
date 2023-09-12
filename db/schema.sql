@@ -32,7 +32,8 @@ CREATE TABLE patients (
  address VARCHAR(200) NOT NULL,
  city VARCHAR(200) NOT NULL,
  state VARCHAR(200) NOT NULL,
- zip_code VARCHAR(200) NOT NULL   
+ zip_code VARCHAR(200) NOT NULL,
+ profile_picture VARCHAR(500)   
 );
 
 CREATE TABLE journal_entries (
