@@ -17,7 +17,7 @@ const {
 } = require("../queries/journals");
 
 
-// get method route to show all patients with high risk journals for one therapist
+// get method route to request all patients with high risk journals for one therapist
 therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     try {
         const { tid } = req.params;
@@ -35,7 +35,7 @@ therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     }
 });
 
-// get all patients by therapist that are at medium risk
+// get method route to request all patients by therapist that are at medium risk
 therapist.get("/:tid/dashboard/mediumrisk", async (req, res) => {
     try {
         const { tid } = req.params;
@@ -54,7 +54,7 @@ therapist.get("/:tid/dashboard/mediumrisk", async (req, res) => {
 });
 
 
-// get all patients by therapist that are at low/no risk
+// get method route to request all patients by therapist that are at low/no risk
 therapist.get("/:tid/dashboard/lowrisk", async (req, res) => {
     try {
         const { tid } = req.params;
