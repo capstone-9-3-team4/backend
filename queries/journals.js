@@ -35,9 +35,9 @@ const updateJournal = async (jid, journal) => {
     try {
         const updatedJournal = await db.one(
             `UPDATE journal_entries 
-            SET patient_id=$1, entry_date=$2, journal_entry=$3, analysis_score=$4, read=$5
-            WHERE id=$6 RETURNING *`,
-            [journal.patient_id, journal.entry_date, journal.journal_entry, journal.analysis_score, journal.read, jid]
+            SET patient_id=$1, entry_date=$2, journal_entry=$3, therapist_notes=$4, analysis_score=$5, read=$6
+            WHERE id=$7 RETURNING *`,
+            [journal.patient_id, journal.entry_date, journal.journal_entry, journal.therapist_notes, journal.analysis_score, journal.read, jid]
         );
         return { updatedJournal };
     } catch (error) {
