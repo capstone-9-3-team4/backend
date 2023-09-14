@@ -4,10 +4,10 @@ const validateJournal = require("../validations/validateJournal");
 const {
     getUnreadJournalsOfPatientByTherapist,
     getUnreadJournalOfPatientByTherapist,
-    updateJournal
+    updateJournal,
+    createJournal
     // getAllJournals,
     // getJournal,
-    // createJournal,
     // deleteJournal
 } = require("../queries/journals");
 
@@ -63,6 +63,21 @@ journals.put("/:jid", async (req, res) => {
     }
 });
 
+// post method route to create a journal
+journals.post("/", async (req, res) => {
+    // journals.post("/", validateJournal, async (req, res) => {    
+    try {
+        const { error, newJournal } = await createJournal(req.body);
+        if (error) {
+            throw new Error("Server Error");
+        } else {
+            res.status(201).json(newJournal);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+});
+
 // get method route to index all journals
 // journals.get("/", async (req, res) => {
 //     try {
@@ -95,19 +110,6 @@ journals.put("/:jid", async (req, res) => {
 //     }
 // })
 
-// // post method route to create a journal
-// journals.post("/", validateJournal, async (req, res) => {
-//     try {
-//         const { error, newJournal } = await createJournal(req.body);
-//         if (error) {
-//             throw new Error("Server Error");
-//         } else {
-//             res.status(201).json(newJournal);
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: error.message })
-//     }
-// });
 
 // // put method route to update a journal
 // journals.put("/:id", validateJournal, async (req, res) => {

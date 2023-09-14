@@ -16,6 +16,8 @@ const {
     getAllJournals
 } = require("../queries/journals");
 
+// loading patientsControllers middleware
+therapist.use("/:tid/patients", patientsControllers)
 
 // get method route to request all patients with high risk journals for one therapist
 therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
@@ -74,8 +76,7 @@ therapist.get("/:tid/dashboard/lowrisk", async (req, res) => {
 });
 
 
-// loading patientsControllers middleware
-therapist.use("/:tid/patients", patientsControllers)
+
 
 
 // // get method route to show all journals for one patient for one therapist

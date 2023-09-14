@@ -11,9 +11,9 @@ const getAllPatients = async () => {
 };
 
 // query to get one patient
-const getPatient = async (id) => {
+const getPatientByUserId = async (id) => {
     try {
-        const patient = await db.one("SELECT * FROM patients WHERE id=$1", id);
+        const patient = await db.one("SELECT * FROM patients WHERE user_id=$1", id);
         return { patient };
     } catch (error) {
         return { error: error };
@@ -64,7 +64,7 @@ const deletePatient = async (id) => {
 
 module.exports = {
     getAllPatients,
-    getPatient,
+    getPatientByUserId,
     createPatient,
     updatePatient,
     deletePatient
