@@ -41,6 +41,7 @@ CREATE TABLE journal_entries (
  patient_id INTEGER NOT NULL REFERENCES patients(id),
  entry_date DATE NOT NULL,
  journal_entry VARCHAR(3000) NOT NULL,
+ therapist_notes VARCHAR(3000) DEFAULT NULL,
  analysis_score INTEGER NOT NULL,
  read BOOLEAN DEFAULT FALSE
 );
