@@ -10,6 +10,9 @@ const {
     deletePatient
 } = require("../queries/patients");
 
+
+
+
 // get method route to request one patient
 patients.get("/:pid", async (req, res) => {
     try {
