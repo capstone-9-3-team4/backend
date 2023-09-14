@@ -4,17 +4,20 @@ const journalsControllers = require("./journalsControllers");
 const validatePatient = require("../validations/validatePatient");
 const {
     getAllPatients,
-    getPatient,
+    getPatientByUserId,
     createPatient,
     updatePatient,
     deletePatient
 } = require("../queries/patients");
 
+// loading journalsControllers middleware
+patients.use("/:pid/journals", journalsControllers)
+
 // get method route to request one patient
-patients.get("/:pid", async (req, res) => {
+patients.get("/user/:uid", async (req, res) => {
     try {
-        const { pid } = req.params;
-        const { error, patient } = await getPatient(pid);
+        const { uid } = req.params;
+        const { error, patient } = await getPatientByUserId(uid);
         if (error && error.received === 0) {
             res.status(404).json({ error: "Patient Not Found, Check Patient ID And Try Again" });
         } else if (error) {
@@ -27,8 +30,7 @@ patients.get("/:pid", async (req, res) => {
     }
 });
 
-// loading journalsControllers middleware
-patients.use("/:pid/journals", journalsControllers)
+
 
 // // get method route to index all patients
 // patients.get("/", async (req, res) => {
