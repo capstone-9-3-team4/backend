@@ -45,6 +45,23 @@ const updateJournal = async (jid, journal) => {
     }
 };
 
+// query to create journal entry
+const createJournal = async (journal) => {
+    try {
+        const newJournal = await db.one(
+            `INSERT INTO
+            journal_entries(patient_id, entry_date, journal_entry, therapist_notes, analysis_score, read)
+            VALUES
+             ($1, $2, $3, $4, $5, $6)
+            RETURNING * `,
+            [journal.patient_id, journal.entry_date, journal.journal_entry, journal.therapist_notes, journal.analysis_score, journal.read]
+        );
+        return { newJournal };
+    } catch (error) {
+        return { error: error };
+    }
+};
+
 // query to get all journal entries
 // const getAllJournalsByTherapist = async () => {
 //     try {
@@ -65,24 +82,6 @@ const updateJournal = async (jid, journal) => {
 //     }
 // };
 
-// // query to create journal entry
-// const createJournal = async (journal) => {
-//     try {
-//         const newJournal = await db.one(
-//             `INSERT INTO
-//             journal_entries(patient_id, entry_date, journal_entry, analysis_score)
-//             VALUES
-//              ($1, $2, $3, $4)
-//             RETURNING * `,
-//             [journal.patient_id, journal.entry_date, journal.journal_entry, journal.analysis_score]
-//         );
-//         return { newJournal };
-//     } catch (error) {
-//         return { error: error };
-//     }
-// };
-
-
 
 // // query to delete journal entry
 // const deleteJournal = async (id) => {
@@ -97,9 +96,9 @@ const updateJournal = async (jid, journal) => {
 module.exports = {
     getUnreadJournalsOfPatientByTherapist,
     getUnreadJournalOfPatientByTherapist,
-    updateJournal
+    updateJournal,
+    createJournal
     // getAllJournalsByTherapist,
     // getJournal,
-    // createJournal,
     // deleteJournal
 }
