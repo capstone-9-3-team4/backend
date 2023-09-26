@@ -5,17 +5,26 @@ const {
     getUnreadJournalsOfPatientByTherapist,
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
-    createJournal
+    createJournal,
+    getAllJournalsByTherapist
     // getAllJournals,
     // getJournal,
     // deleteJournal
 } = require("../queries/journals");
 
 
+journals.get("/", async (req, res) => {
+    try {
+        const { error, allJournals } = await getAllJournalsByTherapist();
+        res.status(200).json(allJournals);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // get method route to request unread journals of patients by therapist
 journals.get("/unread", async (req, res) => {
     const { tid, pid } = req.params;
-
     try {
         const { error, unreadJournalsOfPatientByTherapist } = await getUnreadJournalsOfPatientByTherapist(tid, pid);
 
@@ -37,8 +46,10 @@ journals.get("/unread/:jid", async (req, res) => {
 
     try {
         const { error, unreadJournalOfPatientByTherapist } = await getUnreadJournalOfPatientByTherapist(tid, pid, jid);
-
+        console.log(unreadJournalOfPatientByTherapist);
         if (error) {
+            console.log("get error:", error)
+
             throw new Error("Server Error");
         } else {
 

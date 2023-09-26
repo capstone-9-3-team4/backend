@@ -43,5 +43,6 @@ CREATE TABLE journal_entries (
  journal_entry VARCHAR(3000) NOT NULL,
  therapist_notes VARCHAR(3000) DEFAULT NULL,
  analysis_score INTEGER NOT NULL,
+ ai_response VARCHAR(3000),
  read BOOLEAN DEFAULT FALSE
 );
