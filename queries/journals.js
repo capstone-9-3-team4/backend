@@ -39,7 +39,6 @@ const updateJournal = async (jid, journal) => {
         WHERE id=$8 
         RETURNING *
         `
-
         const updatedJournal = await db.one(
             query,
             [journal.patient_id, journal.entry_date, journal.journal_entry, journal.therapist_notes, journal.analysis_score, journal.ai_response, journal.read, jid]
@@ -55,11 +54,11 @@ const createJournal = async (journal) => {
     try {
         const newJournal = await db.one(
             `INSERT INTO
-            journal_entries(patient_id, entry_date, journal_entry, therapist_notes, analysis_score, read)
+            journal_entries(patient_id, entry_date, journal_entry, therapist_notes, analysis_score, ai_response, read)
             VALUES
-             ($1, $2, $3, $4, $5, $6)
+             ($1, $2, $3, $4, $5, $6, $7)
             RETURNING * `,
-            [journal.patient_id, journal.entry_date, journal.journal_entry, journal.therapist_notes, journal.analysis_score, journal.read]
+            [journal.patient_id, journal.entry_date, journal.journal_entry, journal.therapist_notes, journal.analysis_score, journal.ai_response, journal.read]
         );
         return { newJournal };
     } catch (error) {
