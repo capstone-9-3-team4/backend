@@ -76,7 +76,8 @@ journals.put("/:jid", async (req, res) => {
 
 // post method route to create a journal
 journals.post("/", async (req, res) => {
-    // journals.post("/", validateJournal, async (req, res) => {    
+    // journals.post("/", validateJournal, async (req, res) => {   
+       
     try {
         const { error, newJournal } = await createJournal(req.body);
         if (error) {
