@@ -27,7 +27,7 @@ journals.get("/", async (req, res) => {
 journals.get("/read", async (req, res) => {
     const { tid, pid } = req.params;
     try {
-        const { error, readJournalsOfPatientsByTherapist } = await getReadJournalsOfPatientsByTherapist(id, pid);
+        const { error, readJournalsOfPatientsByTherapist } = await getReadJournalsOfPatientsByTherapist(tid, pid);
         if (error) {
             throw new Error("Server Error");
         } else {

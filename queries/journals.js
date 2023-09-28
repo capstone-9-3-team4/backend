@@ -6,7 +6,7 @@ const getReadJournalsOfPatientsByTherapist = async (tid, pid) => {
         const readJournalsOfPatientsByTherapist = await db.any(
             `SELECT p.id p_id, j.* FROM therapists t join patients p ON (t.id = p.therapist_id)
             JOIN journal_entries j ON (p.id=j.patient_id)
-            WHERE t.id=$1 and p.id=$2 AND j.read = false
+            WHERE t.id=$1 and p.id=$2 AND j.read = true
             ORDER BY j.analysis_score,j.entry_date`, [tid, pid]
         );
         return { readJournalsOfPatientsByTherapist };
