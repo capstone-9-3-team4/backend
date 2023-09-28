@@ -2,6 +2,7 @@ const express = require("express");
 const journals = express.Router({ mergeParams: true });
 const validateJournal = require("../validations/validateJournal");
 const {
+    getReadJournalsOfPatientsByTherapist,
     getUnreadJournalsOfPatientByTherapist,
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
@@ -22,19 +23,31 @@ journals.get("/", async (req, res) => {
     }
 });
 
+// get method route to request read journals of patient by therapist
+journals.get("/read", async (req, res) => {
+    const { tid, pid } = req.params;
+    try {
+        const { error, readJournalsOfPatientsByTherapist } = await getReadJournalsOfPatientsByTherapist(id, pid);
+        if (error) {
+            throw new Error("Server Error");
+        } else {
+            res.status(200).json(readJournalsOfPatientsByTherapist);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // get method route to request unread journals of patients by therapist
 journals.get("/unread", async (req, res) => {
     const { tid, pid } = req.params;
     try {
         const { error, unreadJournalsOfPatientByTherapist } = await getUnreadJournalsOfPatientByTherapist(tid, pid);
-
         if (error) {
             throw new Error("Server Error");
         } else {
-
             res.status(200).json(unreadJournalsOfPatientByTherapist);
         }
-
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -43,22 +56,18 @@ journals.get("/unread", async (req, res) => {
 // get method route to request one unread journal of patient by therapist
 journals.get("/unread/:jid", async (req, res) => {
     const { tid, pid, jid } = req.params;
-
     try {
         const { error, unreadJournalOfPatientByTherapist } = await getUnreadJournalOfPatientByTherapist(tid, pid, jid);
         if (error) {
-            console.log("get error:", error)
-
             throw new Error("Server Error");
         } else {
-
             res.status(200).json(unreadJournalOfPatientByTherapist);
         }
-
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // put method route to update journal 
 journals.put("/:jid", async (req, res) => {
