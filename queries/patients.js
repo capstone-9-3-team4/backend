@@ -3,7 +3,7 @@ const db = require("../db/dbConfig");
 // query to get all patients
 const getAllPatients = async () => {
     try {
-        const allPatients = await db.any("SELECT * FROM patients");
+        const allPatients = await db.any("SELECT * FROM patients ");
         return { allPatients };
     } catch (error) {
         return { error: error };
