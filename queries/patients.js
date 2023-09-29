@@ -1,9 +1,9 @@
 const db = require("../db/dbConfig");
 
 // query to get all patients
-const getAllPatients = async () => {
+const getAllPatientsByTherapist = async (tid) => {
     try {
-        const allPatients = await db.any("SELECT * FROM patients ");
+        const allPatients = await db.any("SELECT * FROM patients WHERE therapist_id=$1 ORDER BY last_name ASC", tid);
         return { allPatients };
     } catch (error) {
         return { error: error };
@@ -74,7 +74,7 @@ const deletePatient = async (id) => {
 };
 
 module.exports = {
-    getAllPatients,
+    getAllPatientsByTherapist,
     getPatientById,
     getPatientByUserId,
     createPatient,

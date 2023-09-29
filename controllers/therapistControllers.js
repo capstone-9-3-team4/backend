@@ -5,9 +5,9 @@ const validateTherapist = require("../validations/validateTherapist");
 const {
     getTherapistAndHighRiskPatients,
     getTherapistAndMediumRiskPatients,
-    getTherapistAndLowRiskPatients
+    getTherapistAndLowRiskPatients,
+    getTherapist
     // getAllTherapists,
-    // getTherapist,
     // createTherapist,
     // updateTherapist,
     // deleteTherapistg
@@ -24,7 +24,6 @@ therapist.get("/:tid/dashboard/highrisk", async (req, res) => {
     try {
         const { tid } = req.params;
         const { error, allHighRiskPatientsByTherapist } = await getTherapistAndHighRiskPatients(tid);
-
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
@@ -42,7 +41,6 @@ therapist.get("/:tid/dashboard/mediumrisk", async (req, res) => {
     try {
         const { tid } = req.params;
         const { error, allMediumRiskPatientsByTherapist } = await getTherapistAndMediumRiskPatients(tid);
-
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
@@ -61,7 +59,6 @@ therapist.get("/:tid/dashboard/lowrisk", async (req, res) => {
     try {
         const { tid } = req.params;
         const { error, allLowRiskPatientsByTherapist } = await getTherapistAndLowRiskPatients(tid);
-
         if (error && error.received === 0) {
             res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
         } else if (error) {
@@ -76,7 +73,22 @@ therapist.get("/:tid/dashboard/lowrisk", async (req, res) => {
 });
 
 
-
+// get method route to request one therapist
+therapist.get("/:tid", async (req, res) => {
+    try {
+        const { tid } = req.params;
+        const { error, therapist } = await getTherapist(tid);
+        if (error && error.received === 0) {
+            res.status(404).json({ error: "Therapist Not Found, Check Therapist ID And Try Again" });
+        } else if (error) {
+            throw new Error("Server Error")
+        } else {
+            res.status(200).json(therapist);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
 // // get method route to show all journals for one patient for one therapist

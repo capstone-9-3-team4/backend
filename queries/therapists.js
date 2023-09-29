@@ -45,7 +45,17 @@ const getTherapistAndLowRiskPatients = async (id) => {
 };
 
 
-
+// query to get one therapist
+const getTherapist = async (tid) => {
+    try {
+        const therapist = await db.one(
+            `SELECT * FROM therapists WHERE id=$1`, tid
+        )
+        return { therapist }
+    } catch (error) {
+        return { error: error };
+    }
+};
 
 
 // // query to get all therapists (admin)
@@ -103,10 +113,9 @@ const getTherapistAndLowRiskPatients = async (id) => {
 module.exports = {
     getTherapistAndHighRiskPatients,
     getTherapistAndMediumRiskPatients,
-    getTherapistAndLowRiskPatients
-
+    getTherapistAndLowRiskPatients,
+    getTherapist
     // getAllTherapists,
-    // getTherapist,
     // createTherapist,
     // updateTherapist,
     // deleteTherapist
