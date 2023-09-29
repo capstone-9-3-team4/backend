@@ -3,7 +3,7 @@ const patients = express.Router({ mergeParams: true });
 const journalsControllers = require("./journalsControllers");
 const validatePatient = require("../validations/validatePatient");
 const {
-    getAllPatients,
+    getAllPatientsByTherapist,
     getPatientByUserId,
     getPatientById,
     createPatient,
@@ -51,19 +51,20 @@ patients.get("/user/:uid", async (req, res) => {
 
 
 
-// // get method route to index all patients
-// patients.get("/", async (req, res) => {
-//     try {
-//         const { error, allPatients } = await getAllPatients();
-//         if (error) {
-//             throw new Error("ServerError");
-//         } else {
-//             res.status(200).json(allPatients);
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
+// get method route to index all patients by therapist
+patients.get("/", async (req, res) => {
+    try {
+        const { tid } = req.params;
+        const { error, allPatients } = await getAllPatientsByTherapist(tid);
+        if (error) {
+            throw new Error("ServerError");
+        } else {
+            res.status(200).json(allPatients);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // // post method route to create a patient
 // patients.post("/", validatePatient, async (req, res) => {
