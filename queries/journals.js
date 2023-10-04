@@ -84,7 +84,7 @@ const createJournal = async (journal) => {
 // query to get all journal entries
 const getAllJournalsByPatient = async (pid) => {
     try {
-        const allJournals = await db.any("SELECT * FROM journal_entries WHERE patient_id=$1", [pid]);
+        const allJournals = await db.any("SELECT * FROM journal_entries WHERE patient_id=$1 order by analysis_score", [pid]);
         return { allJournals };
     } catch (error) {
         return { error: error };
