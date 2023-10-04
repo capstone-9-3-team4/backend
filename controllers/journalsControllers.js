@@ -7,7 +7,8 @@ const {
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
     createJournal,
-    getAllJournalsByPatient
+    getAllJournalsByPatient,
+    getJournal
     // getAllJournals,
     // deleteJournal
 } = require("../queries/journals");
