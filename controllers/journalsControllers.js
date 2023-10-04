@@ -7,16 +7,16 @@ const {
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
     createJournal,
-    getAllJournalsByTherapist,
-    getJournal,
+    getAllJournalsByPatient
     // getAllJournals,
     // deleteJournal
 } = require("../queries/journals");
 
 
 journals.get("/", async (req, res) => {
+    const { pid } = req.params;
     try {
-        const { error, allJournals } = await getAllJournalsByTherapist();
+        const { error, allJournals } = await getAllJournalsByPatient(pid);
         res.status(200).json(allJournals);
     } catch (error) {
         res.status(500).json({ error: error.message });
