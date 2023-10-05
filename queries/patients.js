@@ -31,6 +31,17 @@ const getPatientByUserId = async (id) => {
     }
 };
 
+
+// query to get therapist info of one patient
+const getTherapistInfo = async (pid) => {
+    try {
+        const therapist = await db.one("SELECT specialization,t.email email,license_number,t.first_name first_name,t.last_name last_name  FROM patients p join therapists t on (t.id=p.therapist_id) WHERE p.therapist_id=$1 group by 1,2,3,4,5", [pid]);
+        return { therapist };
+    } catch (error) {
+        return { error: error };
+    }
+};
+
 // query to create one patient
 const createPatient = async (patient) => {
     try {
@@ -79,5 +90,6 @@ module.exports = {
     getPatientByUserId,
     createPatient,
     updatePatient,
-    deletePatient
+    deletePatient,
+    getTherapistInfo
 }

@@ -6,13 +6,17 @@ const {
     getAllPatientsByTherapist,
     getPatientByUserId,
     getPatientById,
-    createPatient,
-    updatePatient,
-    deletePatient
+    getTherapistInfo
+    // createPatient,
+    // updatePatient,
+    // deletePatient
 } = require("../queries/patients");
 
 // loading journalsControllers middleware
 patients.use("/:pid/journals", journalsControllers)
+
+
+
 
 // get method route to request one patient
 patients.get("/:id", async (req, res) => {
@@ -31,7 +35,21 @@ patients.get("/:id", async (req, res) => {
     }
 });
 
+patients.get("/:pid/gettherapist", async (req, res) => {
 
+    try {
+        const { pid } = req.params;
+        const { error, therapist } = await getTherapistInfo(pid);
+        if (error) {
+            throw new Error("ServerError");
+        } else {
+            res.status(200).json(therapist);
+        }
+    } catch (error) {
+        
+        res.status(500).json({ error: error.message });
+    }
+});
 
 patients.get("/user/:uid", async (req, res) => {
     try {
@@ -51,7 +69,8 @@ patients.get("/user/:uid", async (req, res) => {
 
 
 
-// get method route to index all patients by therapist
+
+// get therapist info of a Patient
 patients.get("/", async (req, res) => {
     try {
         const { tid } = req.params;
@@ -65,6 +84,7 @@ patients.get("/", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // // post method route to create a patient
 // patients.post("/", validatePatient, async (req, res) => {
