@@ -7,21 +7,24 @@ const {
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
     createJournal,
-    getAllJournalsByTherapist
+    getAllJournalsByPatient,
+    getJournal
     // getAllJournals,
-    // getJournal,
     // deleteJournal
 } = require("../queries/journals");
 
 
 journals.get("/", async (req, res) => {
+    const { pid } = req.params;
     try {
-        const { error, allJournals } = await getAllJournalsByTherapist();
+        const { error, allJournals } = await getAllJournalsByPatient(pid);
         res.status(200).json(allJournals);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+
 
 // get method route to request read journals of patient by therapist
 journals.get("/read", async (req, res) => {
@@ -68,6 +71,23 @@ journals.get("/unread/:jid", async (req, res) => {
     }
 });
 
+//get method route to show one journal 
+journals.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { error, journal } = await getJournal(id);
+        if (error && error.received === 0) {
+            res.status(404).json({ error: "Journal Entry Not Found, Check Journal ID And Try Again" });
+        } else if (error) {
+            throw new Error("Server Error");
+        } else {
+            res.status(200).json(journal);
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 
 // put method route to update journal 
 journals.put("/:jid", async (req, res) => {
@@ -111,22 +131,7 @@ journals.post("/", async (req, res) => {
 // });
 
 
-// // get method route to show one journal 
-// journals.get("/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { error, journal } = await getJournal(id);
-//         if (error && error.received === 0) {
-//             res.status(404).json({ error: "Journal Entry Not Found, Check Journal ID And Try Again" });
-//         } else if (error) {
-//             throw new Error("Server Error");
-//         } else {
-//             res.status(200).json(journal);
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// })
+
 
 
 // // put method route to update a journal

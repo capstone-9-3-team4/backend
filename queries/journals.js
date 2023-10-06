@@ -82,24 +82,24 @@ const createJournal = async (journal) => {
 };
 
 // query to get all journal entries
-const getAllJournalsByTherapist = async () => {
+const getAllJournalsByPatient = async (pid) => {
     try {
-        const allJournals = await db.any("SELECT * FROM journal_entries");
+        const allJournals = await db.any("SELECT * FROM journal_entries WHERE patient_id=$1 order by analysis_score", [pid]);
         return { allJournals };
     } catch (error) {
         return { error: error };
     }
 };
 
-// // query to get one journal entry
-// const getJournal = async (id) => {
-//     try {
-//         const journal = await db.one("SELECT * FROM journal_entries WHERE id=$1", id);
-//         return { journal };
-//     } catch (error) {
-//         return { error: error };
-//     }
-// };
+// query to get one journal entry
+const getJournal = async (id) => {
+    try {
+        const journal = await db.one("SELECT * FROM journal_entries WHERE id=$1", id);
+        return { journal };
+    } catch (error) {
+        return { error: error };
+    }
+};
 
 
 // // query to delete journal entry
@@ -118,7 +118,7 @@ module.exports = {
     getUnreadJournalOfPatientByTherapist,
     updateJournal,
     createJournal,
-    getAllJournalsByTherapist
-    // getJournal,
+    getAllJournalsByPatient,
+    getJournal
     // deleteJournal
 }

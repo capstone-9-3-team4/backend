@@ -1,9 +1,9 @@
 const db = require("../db/dbConfig");
 
 // query to get all patients
-const getAllPatients = async () => {
+const getAllPatientsByTherapist = async (tid) => {
     try {
-        const allPatients = await db.any("SELECT * FROM patients");
+        const allPatients = await db.any("SELECT * FROM patients WHERE therapist_id=$1 ORDER BY last_name ASC", tid);
         return { allPatients };
     } catch (error) {
         return { error: error };
@@ -26,6 +26,17 @@ const getPatientByUserId = async (id) => {
     try {
         const patient = await db.one("SELECT * FROM patients WHERE user_id=$1", id);
         return { patient };
+    } catch (error) {
+        return { error: error };
+    }
+};
+
+
+// query to get therapist info of one patient
+const getTherapistInfo = async (pid) => {
+    try {
+        const therapist = await db.one("SELECT specialization,t.email email,license_number,t.first_name first_name,t.last_name last_name  FROM patients p join therapists t on (t.id=p.therapist_id) WHERE p.therapist_id=$1 group by 1,2,3,4,5", [pid]);
+        return { therapist };
     } catch (error) {
         return { error: error };
     }
@@ -74,10 +85,11 @@ const deletePatient = async (id) => {
 };
 
 module.exports = {
-    getAllPatients,
+    getAllPatientsByTherapist,
     getPatientById,
     getPatientByUserId,
     createPatient,
     updatePatient,
-    deletePatient
+    deletePatient,
+    getTherapistInfo
 }
