@@ -106,7 +106,9 @@ journals.put("/:jid", async (req, res) => {
 journals.post("/", async (req, res) => {
     try {
         const { error, newJournal } = await createJournal(req.body);
+        console.log('New journal submitted', newJournal)
         if (error) {
+            console.error(error.message);
             throw new Error("Server Error");
         } else {
             res.status(201).json(newJournal);
